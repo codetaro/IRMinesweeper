@@ -8,6 +8,7 @@ namespace IRMinesweeper
 {
     class Program
     {
+        // Get number of adjacent mines on each tile
         static List<Hint> GetHints(List<Mine> mines)
         {
             List<Hint> hints = new List<Hint>();
@@ -16,6 +17,7 @@ namespace IRMinesweeper
                 int row = mine.Pos.Item1;
                 int col = mine.Pos.Item2;
 
+                // All adjacent tiles around a mine
                 Hint[] adjacent_tiles = {
                     new Hint(row-1, col-1),
                     new Hint(row-1, col),
@@ -26,10 +28,14 @@ namespace IRMinesweeper
                     new Hint(row+1, col),
                     new Hint(row+1, col+1)
                 };
+
+                // Set the number of adjacent mines for each tile
                 foreach (Hint tile in adjacent_tiles)
                 {
                     if (hints.IndexOf(tile) == -1)
+                    {
                         hints.Add(tile);
+                    }
                     else
                     {
                         int idx = hints.IndexOf(tile);
@@ -41,13 +47,15 @@ namespace IRMinesweeper
             return hints;
         }
 
+        // Print the output on screen with mines and hints
         static void Output(int rows, int cols, List<Hint> hints, List<Mine> mines)
         {
             char[,] field_out = new char[rows,cols];
+            // Initiate the panel with 0 hint on each tile
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
                     field_out[i, j] = '0';
-
+            // Set hints on tiles
             for (int i = 1; i <= rows; i++)
             {
                 for (int j = 1; j <= cols; j++)
@@ -61,7 +69,7 @@ namespace IRMinesweeper
                     }
                 }
             }
-
+            // Set mines on tiles
             foreach (Mine mine in mines)
             {
                 int row = mine.Pos.Item1 - 1;
@@ -69,7 +77,7 @@ namespace IRMinesweeper
 
                 field_out[row, col] = '*';
             }
-
+            // Print out the result on screen
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
